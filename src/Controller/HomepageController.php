@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Optreden;
+use App\Repository\OptredenRepository;
 
 #[Route('/homepage')]
 class HomepageController extends AbstractController
@@ -13,9 +15,11 @@ class HomepageController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(): Response
     {
-        return $this->render('homepage/index.html.twig', [
-            'controller_name' => 'HomepageController',
-        ]);
+        $rep = $this->getDoctrine()->getRepository(Optreden::class);
+        $data = $rep->getAllOptredens();
+
+        dump($data);
+        die();
     }
 
     #[Route('/save-data', name: 'homepage_save_data')]

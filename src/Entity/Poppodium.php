@@ -42,8 +42,9 @@ class Poppodium
     #[ORM\Column(length: 100)]
     private ?string $afbeelding_url = null;
 
-    private $optredens;
-    
+    #[ORM\OneToMany(targetEntity: Optreden::class, mappedBy: 'poppodium')]
+    private Collection $optredens;
+
     public function __construct()
     {
         $this->optredens = new ArrayCollection();
@@ -165,6 +166,36 @@ class Poppodium
     public function setAfbeeldingUrl(string $afbeelding_url): static
     {
         $this->afbeelding_url = $afbeelding_url;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Optreden>
+     */
+    public function getOptredens(): Collection
+    {
+        return $this->optredens;
+    }
+
+    public function addOptreden(Optreden $optreden): static
+    {
+        if (!$this->optredens->contains($optreden)) {
+            $this->optredens->add($optreden);
+            $optreden->setPoppodium($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOptreden(Optreden $optreden): static
+    {
+        if ($this->optredens->removeElement($optreden)) {
+            // set the owning side to null (unless already changed)
+            if ($optreden->getPoppodium() === $this) {
+                $optreden->setPoppodium(null);
+            }
+        }
 
         return $this;
     }
