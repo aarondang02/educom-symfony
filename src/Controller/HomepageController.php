@@ -7,16 +7,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Optreden;
-use App\Repository\OptredenRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[Route('/homepage')]
 class HomepageController extends AbstractController
 {
+
+
     #[Route('/', name: 'homepage')]
-    public function index(): Response
+    public function index(EntityManagerInterface $entityManager): Response
     {
-        $rep = $this->getDoctrine()->getRepository(Optreden::class);
-        $data = $rep->getAllOptredens();
+  
+        $repo = $entityManager->getRepository(Optreden::class);
+        $data = $repo->findAll();
 
         dump($data);
         die();
