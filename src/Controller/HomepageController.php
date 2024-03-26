@@ -17,12 +17,15 @@ class HomepageController extends AbstractController
     #[Route('/', name: 'homepage')]
     public function index(EntityManagerInterface $entityManager): Response
     {
-  
+        
         $repo = $entityManager->getRepository(Optreden::class);
-        $data = $repo->findAll();
+        $data = $repo->getAllOptredens();
 
         dump($data);
-        die();
+        //die();
+        return $this->render('homepage/index.html.twig', [
+            'controller_name' => 'HomepageController',
+        ]);
     }
 
     #[Route('/save-data', name: 'homepage_save_data')]
@@ -52,6 +55,5 @@ class HomepageController extends AbstractController
             return(new Response($d));
         }
     }
-
 
 }
